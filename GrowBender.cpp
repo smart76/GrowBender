@@ -701,7 +701,11 @@ void ChangeAndSaveParameter(uint8_t &pParameter, uint8_t pLowLimit, uint8_t pHig
 		else
 			pParameter = pHighLimit;
 	}
-	eeprom_write_byte((uint8_t*)(pEEPROMAddress + 0), pParameter);
+	if (!pWriteDevice)
+		eeprom_write_byte((uint8_t*)(pEEPROMAddress + 0), pParameter);
+	else
+		SetClock(pEEPROMAddress, pParameter);
+	
 }
 
 void ChangeAndSaveParameter(int8_t &pParameter,  int8_t pLowLimit, int8_t pHighLimit, uint16_t pEEPROMAddress, uint8_t pWriteDevice /*0 - eeprom; 1- clock */)
@@ -734,7 +738,7 @@ void ChangeAndSaveParameter(int8_t &pParameter,  int8_t pLowLimit, int8_t pHighL
 		else
 			pParameter = pHighLimit;
 	}
-	if (pWriteDevice)
+	if (!pWriteDevice)
 		eeprom_write_byte((uint8_t*)pEEPROMAddress, pParameter);
 	else
 		SetClock(pEEPROMAddress, pParameter);
