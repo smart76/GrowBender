@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Atmel Studio Solution File, Format Version 11.00
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "GrowBender", "GrowBender.cppproj", "{79540742-BFF5-497F-94D3-274D18FCD4A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Device0|AVR = Device0|AVR
+		Device1_1|AVR = Device1_1|AVR
+		Device1|AVR = Device1|AVR
+		h|AVR = h|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Debug|AVR.ActiveCfg = Debug|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Debug|AVR.Build.0 = Debug|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Device0|AVR.ActiveCfg = Device0|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Device0|AVR.Build.0 = Device0|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Device1_1|AVR.ActiveCfg = Device1|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Device1_1|AVR.Build.0 = Device1|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Device1|AVR.ActiveCfg = Device1|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Device1|AVR.Build.0 = Device1|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.h|AVR.ActiveCfg = Device0|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.h|AVR.Build.0 = Device0|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Release|AVR.ActiveCfg = Release|AVR
+		{79540742-BFF5-497F-94D3-274D18FCD4A2}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
