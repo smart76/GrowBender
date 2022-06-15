@@ -5,6 +5,7 @@
  *  Author: smart
  */ 
 
+#define F_CPU 16000000UL
 #include <avr/io.h>
 #include <stdio.h>
 #include <avr/interrupt.h>
@@ -13,7 +14,6 @@
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
 //#include <avrfix.h>
-
 
 
 #include "UART.h"
@@ -297,7 +297,9 @@ int main(void)
 	//while(1==1);	
 	InitBuzzer();
 	sei();	
-
+	
+ 	lcd_clear();
+	lcd_goto(6,2);
 	lcd_puts("Starting");
 
 	if (InitESP())
@@ -308,7 +310,7 @@ int main(void)
 		//eeprom_write_block(mStrBuffer, (void*)EEPROM_ADDRESS_AP_NAME+1, 4); // extra byte for len
 		//eeprom_write_byte((uint8_t*)EEPROM_ADDRESS_AP_PASSWORD, 8);
 		//eeprom_write_block(mStrBuffer2, (void*)EEPROM_ADDRESS_AP_PASSWORD+1, 8);
-				
+		
 		uint8_t strLen;
 		strLen = eeprom_read_byte((uint8_t*)EEPROM_ADDRESS_AP_NAME);
 		eeprom_read_block((void*)mStrBuffer, (void*)EEPROM_ADDRESS_AP_NAME + 1, strLen);
@@ -332,7 +334,7 @@ int main(void)
 		SetMessage("ESP error");
 	else
 		SetMessage("ESP unkerror");
-
+	
 //	uart_puts("started");
 
 #pragma region Reading EEPROM
@@ -388,10 +390,11 @@ int main(void)
 	
 	SetLight(mLigntMode); // little bit unoptimized cus calling SetFan twice
 	SetFan(tempFanMode);
-
+		
 	//InitLCD();
  	lcd_clear();
 	GetDate(mCurrentDate);
+	SetBuzzer(2);
 	
 	DrawFrame();
 	/*//set date and time
@@ -446,18 +449,18 @@ int main(void)
 				ReadIPStart();
 				mNeedToReedIP = 0;
 			}
-			//ReadData(); // reading DHT22
-			//CheckMinMaxDouble(EEPROM_ADDRESS_HUMIDITY, mHumidity);
-			//CheckMinMaxDouble(EEPROM_ADDRESS_TEMP_IN_DHT, mCurrentTempIn_dht);
+			ReadData(); // reading DHT22
+			CheckMinMaxDouble(EEPROM_ADDRESS_HUMIDITY, mHumidity);
+			CheckMinMaxDouble(EEPROM_ADDRESS_TEMP_IN_DHT, mCurrentTempIn_dht);
 			//
-			//mCurrentTempIn = GetTemperature1();
-			//CheckMinMaxDouble(EEPROM_ADDRESS_TEMP_IN, mCurrentTempIn);
+			mCurrentTempIn = GetTemperature1();
+			CheckMinMaxDouble(EEPROM_ADDRESS_TEMP_IN, mCurrentTempIn);
 				//
-			//mCurrentTempOut = GetTemperature2();
-			//CheckMinMaxDouble(EEPROM_ADDRESS_TEMP_OUT, mCurrentTempOut);
+			mCurrentTempOut = GetTemperature2();
+			CheckMinMaxDouble(EEPROM_ADDRESS_TEMP_OUT, mCurrentTempOut);
 //
-			//CheckTemperature();
-			//CheckHumidity();
+			CheckTemperature();
+			CheckHumidity();
 			if (oldRelays != mRelays)
 			{
 				SetRelays();

@@ -10,6 +10,7 @@
 #define DS18B20_H_
 
 #include <avr/io.h>
+#define F_CPU 16000000UL
 #include <util/delay.h>
 
 #define SENSORPORTDIR _SFR_IO8(0x07) // DDRC    

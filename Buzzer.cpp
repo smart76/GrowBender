@@ -31,7 +31,7 @@ void SetBuzzer(uint8_t pMode)
 }
 void ProcessBuzzer()
 {
-	return;
+	//return;
 	mBuzzerCounter++;
 	switch(mBuzzerMode)
 	{

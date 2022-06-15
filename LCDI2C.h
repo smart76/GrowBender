@@ -10,6 +10,7 @@
 #define LCD_H_
 #include <stdlib.h>
 #include <avr/io.h>
+#define F_CPU 16000000UL
 #include <util/delay.h>
 #include <util/twi.h>
 #include <string.h>

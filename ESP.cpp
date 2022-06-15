@@ -188,12 +188,12 @@ bool StartServer(uint16_t pPort)
 	mCommandState = csNone;
 	if (!WaitCommandState(csOk))
 	{
-		mESPState == esServerActive;
+		mESPState = esServerActive;
 		return true;
 	}
 	else
 	{
-		mESPState == esNone;
+		mESPState = esNone;
 		return false;
 	}
 }
@@ -379,7 +379,7 @@ uint16_t ProcessApplicationData(uint8_t pConnectionIndex, char* pData, uint16_t 
 	}
 	else if (pDataLen >= 8 && memcmp(pData, "#sets:", 6)==0)
 	{
-		if (pDataLen >= 8 + pData[7]) // ensure whole string received
+		if (pDataLen >= pData[7]+8) // ensure whole string received
 		{
 			switch(pData[6])
 			{
