@@ -71,7 +71,7 @@ bool WaitConversion()
 		return true;
 }
 // shared vars for 2 methods
-uint16_t a, b;
+//uint16_t a, b;
 double retVal;
 float GetTemperature1()
 {
@@ -101,9 +101,10 @@ float GetTemperature1()
 		WriteByte(SCODE17);
 		WriteByte(0xBE);   //Read memory
 		//WriteByte(0x00);   //Page 1
-		a = ReadByte();
-		b = ReadByte();
-		retVal = (a + b * 256) * 0.0625;
+		//following code reads 2 bytes in sequence and convert it to double decimal
+		//a = ReadByte();
+		//b = ReadByte();
+		retVal = (ReadByte() + ReadByte() * 256) * 0.0625;
 		Write1(); // skipping
 		if (retVal > 200 || retVal < -100 || retVal == 85.0)
 			return NAN;
@@ -143,9 +144,9 @@ float GetTemperature2()
 		WriteByte(0xBE);   //Read memory
 		//WriteByte(0x00);   //Page 1
 
-		a = ReadByte();
-		b = ReadByte();
-		retVal = (a + b * 256) * 0.0625;
+		//a = ReadByte();
+		//b = ReadByte();
+		retVal = (ReadByte() + ReadByte() * 256) * 0.0625;
 		Write1(); // skipping
 		if (retVal > 200 || retVal < -100 || retVal == 85.0)
 			return NAN;

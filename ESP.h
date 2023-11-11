@@ -24,7 +24,7 @@ extern ESPState mESPState;
 extern uint8_t mConnectionState[4];
 volatile extern uint8_t mConnectionReportIndex[4];
 extern uint8_t tmOkCount;
-extern uint16_t ip1, ip2, ip3, ip4;
+extern uint8_t ip1, ip2, ip3, ip4;
 /************************************************************************/
 /*                    vars from clock (MAX3234.cpp)		                */
 extern void SetClock(uint8_t pDateTimeUnit, uint8_t pValue);

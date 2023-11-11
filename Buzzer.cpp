@@ -53,7 +53,7 @@ void ProcessBuzzer()
 	}
 	_delay_ms(50);
 	if ((mBuzzerMode != 3 && mBuzzerMode != 6) || mBuzzerCounter == 3) // IF NOT long tone - 3 cycles
-	PORTB &= ~(1<<PB4);
+		PORTB &= ~(1<<PB4);
 	
 	if (mBuzzerCounter > 22)
 	{

@@ -135,6 +135,13 @@ menuLevel:
 #define SM_GROW_DURATION				28 // set growing start year
 #define SM_RESET_WIFI					29 // set growing start year
 
+#define cStrDateTime                   " %02d-%02d-%02d %s %02d:%02d"
+#define cStrDate                       "%02d-%02d-20%02d"
+#define cStrTime                       "%02d:%02d"
+#define cCharMarker                    '>'
+#define cStrGrow                       "Grow "
+#define cStrMinMaxTime                 " / "
+
 //#define GetVentFan() (mRelays & (1<<VENT_REL))
 //#define GetHeater() (mRelays & (1<<HEATER_REL))
 
@@ -209,12 +216,12 @@ uint8_t mAutoMode; // 0- disabled; 1 - enabled
 uint8_t mTempSensor; // 0 - temp IN sensor; 1- DHT temp sensor (also must be placed inside); 2 - average over both sensors
 int8_t mCriticalTemp;
 uint8_t mNeedToReedIP = 0;
-const char cStrDateTime[] = " %02d-%02d-%02d %s %02d:%02d";
-const char* cStrDate = "%02d-%02d-20%02d";
-const char* cStrTime  = "%02d:%02d";
-const char cCharMarker = '>';
-const char* cStrGrow = "Grow ";
-const char* cStrMinMaxTime =  " / ";
+//const char cStrDateTime[] = " %02d-%02d-%02d %s %02d:%02d";
+//const char* cStrDate = "%02d-%02d-20%02d";
+//const char* cStrTime  = "%02d:%02d";
+//const char cCharMarker = '>';
+//const char* cStrGrow = "Grow ";
+//const char* cStrMinMaxTime =  " / ";
 static uint8_t sEventToggled; 
 
 void InitSwitches();
@@ -301,15 +308,15 @@ int main(void)
  	lcd_clear();
 	lcd_goto(6,2);
 	lcd_puts("Starting");
-
+   
 	if (InitESP())
 	{
-		//strcpy(mStrBuffer, "ASUS");
-		//strcpy(mStrBuffer2, "r4e3w2q1");
-		//eeprom_write_byte((uint8_t*)EEPROM_ADDRESS_AP_NAME, 4);
-		//eeprom_write_block(mStrBuffer, (void*)EEPROM_ADDRESS_AP_NAME+1, 4); // extra byte for len
-		//eeprom_write_byte((uint8_t*)EEPROM_ADDRESS_AP_PASSWORD, 8);
-		//eeprom_write_block(mStrBuffer2, (void*)EEPROM_ADDRESS_AP_PASSWORD+1, 8);
+		strcpy(mStrBuffer, "TP-Link_9C20");
+		strcpy(mStrBuffer2, "r4e3w2q1");
+		eeprom_write_byte((uint8_t*)EEPROM_ADDRESS_AP_NAME, 12);
+		eeprom_write_block(mStrBuffer, (void*)EEPROM_ADDRESS_AP_NAME+1, 12); // extra byte for len
+		eeprom_write_byte((uint8_t*)EEPROM_ADDRESS_AP_PASSWORD, 8);
+		eeprom_write_block(mStrBuffer2, (void*)EEPROM_ADDRESS_AP_PASSWORD+1, 8);
 		
 		uint8_t strLen;
 		strLen = eeprom_read_byte((uint8_t*)EEPROM_ADDRESS_AP_NAME);
@@ -320,11 +327,18 @@ int main(void)
 		mStrBuffer2[strLen] = 0;
 		
 		_delay_ms(2000);
+		lcd_goto(0,0);
+		lcd_puts("Joining ");
+		lcd_puts(mStrBuffer);
+		//lcd_puts(" ");
+		//lcd_puts(mStrBuffer2);
 		if (JoinAP(mStrBuffer, mStrBuffer2))
 		{
 			SetMessage("ESP joined");
 			StartServer(5000);
 		}
+		else 
+			SetMessage("JOIN error");
 	}
 	else if (mCommandState == csBusyp)
 		SetMessage("ESP busy");
@@ -334,8 +348,7 @@ int main(void)
 		SetMessage("ESP error");
 	else
 		SetMessage("ESP unkerror");
-	
-//	uart_puts("started");
+
 
 #pragma region Reading EEPROM
 
@@ -1402,11 +1415,11 @@ void DrawFrame()
 	}
 	else if (mCurremtFrame == 3)
 	{
-	/*	lcd_puts("WiFi");
+		lcd_puts("WiFi");
 		lcd_goto(0,2);
-		lcd_puts("IP:");*/
-		//lcd_goto(0,3);
-		//lcd_puts("State:");
+		lcd_puts("IP:");
+		lcd_goto(0,3);
+		lcd_puts("State:");
 	}
 }
 
@@ -1555,11 +1568,17 @@ void DrawDefault()
 	}
 	else if(mCurremtFrame == 3) 
 	{
-		/*lcd_goto(4, 2);
+		lcd_goto(5, 0);
+		uint8_t strLen;
+		strLen = eeprom_read_byte((uint8_t*)EEPROM_ADDRESS_AP_NAME);
+		eeprom_read_block((void*)mStrBuffer, (void*)EEPROM_ADDRESS_AP_NAME + 1, strLen);
+		lcd_puts(mStrBuffer);
+		
+		lcd_goto(4, 2);
 		sprintf(mStrBuffer, "%d.%d.%d.%d", ip1, ip2, ip3, ip4);
 		lcd_puts(mStrBuffer);
 		
-		lcd_goto(5, 0);
+		lcd_goto(6, 4);
 		if (mConnectionState[0] != 0 || mConnectionState[1] != 0 || mConnectionState[2] != 0 || mConnectionState[3] != 0)
 			lcd_puts("Connected");
 		else if (mESPState == esServerActive || mESPState == esGotIP)
@@ -1567,8 +1586,8 @@ void DrawDefault()
 		else if (mESPState == esNone)
 			lcd_puts("Not ready");
 		else if (mESPState == esHardwareError)
-			lcd_puts("Error    ");*/
-		if (mUARTTail != mUARTHead)
+			lcd_puts("Error    ");
+		/*if (mUARTTail != mUARTHead)
 		{
 			lcd_clear();
 			char str[5];
@@ -1588,7 +1607,7 @@ void DrawDefault()
 				qqq = 0;
 			else 
 				qqq++;
-			for (int i = qqq; i<mUARTHead && i < 20; i++)
+			for (uint16_t i = qqq; i<mUARTHead && i < 20; i++)
 				lcd_putc(mUARTBuffer[i]);
 			if (mUARTHead - mUARTTail > 20)
 			{
@@ -1603,7 +1622,7 @@ void DrawDefault()
 						lcd_putc(mUARTBuffer[i]);
 				}
 			}
-		}
+		}*/
 
 	}
 }
@@ -1787,7 +1806,7 @@ void CheckTemperature()
 				sEventToggled = 1;				
 				if (mBuzzerMode != 4)
 					SetBuzzer(4);
-				if (mAutoMode == 1 && mCurrentTempOut < GetInSensorTemp())
+				if (mAutoMode == 1 && (isnan(mCurrentTempOut) || mCurrentTempOut < GetInSensorTemp()))
 				{
 					if (mHeaterMode)
 						SetHeater(0);

@@ -11,6 +11,9 @@
 #include <avr/wdt.h>
 #include <avr/eeprom.h>
 
+#define csATCommand  "AT+C"
+
+
 //typedef enum {csNone, csOk, csError, csSendPrepare, csSendReady, csSendSuccess} CommandState ;
 //typedef enum {esNone, esGotIP, esServerActive, esHardwareError} ESPState;
 	
@@ -20,9 +23,9 @@ uint8_t mConnectionState[4];
 volatile uint8_t mConnectionReportIndex[4];
 
 bool mShotdownESPRequestReceived = false;
-uint16_t ip1, ip2, ip3, ip4;
+uint8_t ip1, ip2, ip3, ip4;
 
-char* csATCommand = "AT+C";
+//char* csATCommand = "AT+C";
 
 bool WaitCommandState(CommandState pState)
 {
@@ -496,7 +499,6 @@ void ProcessSerialData()
 				//lcd_goto(0,0); lcd_putc('7');
 					uint8_t byteCount = 0;
 					uint8_t dataPos = 0;
-					uint16_t w = 0;
  					do 
  					{
 						byteCount = ProcessApplicationData(mUARTBuffer[pos+7] - '0', colChar + 1 + dataPos, recvDataLen - dataPos);
