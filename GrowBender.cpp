@@ -4,7 +4,6 @@
  * Created: 05.08.2016 21:00:09
  *  Author: smart
  */ 
-
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include <stdio.h>
